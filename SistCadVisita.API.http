@@ -1,0 +1,6 @@
+@SistCadVisita.API_HostAddress = http://localhost:5289
+
+GET {{SistCadVisita.API_HostAddress}}/cadastrarvisita/
+Accept: application/json
+
+###
