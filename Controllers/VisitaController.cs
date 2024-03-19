@@ -42,13 +42,9 @@ namespace SistCadVisita.API.Controllers
             return CreatedAtAction(nameof(GetById), new { id = visita.VisitaId }, visita);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Visita visita)
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] Visita visita)
         {
-            if (id != visita.VisitaId)
-            {
-                return BadRequest();
-            }
 
             _context.Entry(visita).State = EntityState.Modified;
 
@@ -58,7 +54,7 @@ namespace SistCadVisita.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!VisitaExists(id))
+                if (!VisitaExists(visita.VisitaId))
                 {
                     return NotFound();
                 }
@@ -68,7 +64,7 @@ namespace SistCadVisita.API.Controllers
                 }
             }
 
-            return NoContent();
+            return CreatedAtAction(nameof(GetById), new { id = visita.VisitaId }, visita);
         }
 
         [HttpDelete("{id}")]
