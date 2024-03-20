@@ -8,4 +8,5 @@ public class Visita
     public DateTime DataLimiteCadastro { get; set; }
     public int QuantidadePessoas { get; set; }
     public string Status { get; set; }
+    public string? Link { get; set; }
 }

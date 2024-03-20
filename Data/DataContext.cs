@@ -13,5 +13,6 @@ namespace SistCadVisita.API.Data
         {
             throw new NotImplementedException();
         }
+        public DbSet<Visitante> Visitante { get; set; } = default!;
     }
 }

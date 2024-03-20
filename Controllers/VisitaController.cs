@@ -36,10 +36,15 @@ namespace SistCadVisita.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Visita>> Post([FromBody]Visita visita)
         {
+            visita.Link = $"https://localhost:7078/api/visita/{visita.VisitaId}";
+
             _context.Visitas.Add(visita);
             await _context.SaveChangesAsync();
 
+            _context.Entry(visita).State = EntityState.Modified;
+
             return CreatedAtAction(nameof(GetById), new { id = visita.VisitaId }, visita);
+
         }
 
         [HttpPut]
