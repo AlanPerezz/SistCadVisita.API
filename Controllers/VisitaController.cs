@@ -36,20 +36,47 @@ namespace SistCadVisita.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Visita>> Post([FromBody]Visita visita)
         {
-            visita.Link = $"https://localhost:7078/api/visita/{visita.VisitaId}";
 
             _context.Visitas.Add(visita);
             await _context.SaveChangesAsync();
 
-            _context.Entry(visita).State = EntityState.Modified;
+            visita.Link = $"https://localhost:7078/api/visita/{visita.VisitaId}";
+
+            await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetById), new { id = visita.VisitaId }, visita);
-
         }
 
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] Visita visita)
         {
+
+            _context.Entry(visita).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!VisitaExists(visita.VisitaId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction(nameof(GetById), new { id = visita.VisitaId }, visita);
+        }
+
+        [HttpPut("concluir")]
+        public async Task<IActionResult> Concluir([FromBody] Visita visita)
+        {
+
+            visita.Status = "C";
 
             _context.Entry(visita).State = EntityState.Modified;
 
