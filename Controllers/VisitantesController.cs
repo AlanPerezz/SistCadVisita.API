@@ -33,11 +33,24 @@ namespace SistCadVisita.API.Controllers
             return visitante;
         }
 
+        [HttpGet("visita/{id}")]
+        public async Task<ActionResult<IEnumerable<Visitante>>> GetByVisitaId(int id)
+        {
+            var visitante = await _context.Visitantes.ToListAsync();
+            visitante = visitante.Where(x => x.VisitaId == id).ToList();
+
+            if (visitante == null)
+            {
+                return NotFound();
+            }
+
+            return visitante;
+        }
+
         [HttpPost]
         public async Task<ActionResult<Visitante>> Post([FromBody] Visitante visitante)
         {
             _context.Visitantes.Add(visitante);
-
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetById), new { id = visitante.VisitanteId }, visitante);
